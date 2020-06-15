@@ -23,9 +23,17 @@ export class FirestoreService {
     return this.firestore.collection('Clientes').add(data);
   }
 
+  public createCurso(data: {Curso: string, Hora: string, Imparte: string, Lugares: number, Ubicacion: string}){
+    return this.firestore.collection('Cursos').add(data);
+  }
+
   //Obtiene un cliente
   public getCliente(documentId: string) {
     return this.firestore.collection('Clientes').doc(documentId).snapshotChanges();
+  }
+
+  public getCurso(documentId: string) {
+    return this.firestore.collection('Cursos').doc(documentId).snapshotChanges();
   }
 
   //Obtiene todos los clientes 
@@ -42,6 +50,10 @@ export class FirestoreService {
     return this.firestore.collection('Clientes').doc(documentId).set(data);
   }
 
+  public updateCurso(documentId: string, data: any){
+    return this.firestore.collection('Cursos').doc(documentId).set(data);
+  }
+  
   public deleteCliente(documentId: string){
     return this.firestore.collection('Clientes').doc(documentId).delete();
   }

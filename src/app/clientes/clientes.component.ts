@@ -12,8 +12,25 @@ export class ClientesComponent implements OnInit {
   public clientes = [];
   public documentId = null;
   public cursos = [];
+  public currentStatus = 1;
+  public newCursoForm = new FormGroup({
+    Curso: new FormControl('', Validators.required),
+    Hora: new FormControl('', Validators.required),
+    Imparte: new FormControl('', Validators.required),
+    Lugares: new FormControl('', Validators.required),
+    Ubicacion: new FormControl('', Validators.required),
+    id: new FormControl('')
+  });
 
   constructor(private firestoreservice: FirestoreService) {
+    this.newCursoForm.setValue({
+      Curso: '',
+      Hora: '',
+      Imparte: '',
+      Lugares: '',
+      Ubicacion: '',
+      id: '',
+    });
   }
 
   ngOnInit() {
@@ -38,34 +55,98 @@ export class ClientesComponent implements OnInit {
           data: CursoData.payload.doc.data()
         });
       });
-      });
-    }
-    // this.firestoreservice.getCursos().subscribe((cursoSnapshot) => {
-    //   this.cursos = [];
-    //   cursoSnapshot.forEach((CursoData: any) => {
-    //     let curso =
-    //     {
-    //       id: CursoData.payload.doc.id,
-    //       data: CursoData.payload.doc.data(),
-    //     }
-    //     this.cursos.push(curso);
-    //   });
-    // });
+    });
+  }
+  // this.firestoreservice.getCursos().subscribe((cursoSnapshot) => {
+  //   this.cursos = [];
+  //   cursoSnapshot.forEach((CursoData: any) => {
+  //     let curso =
+  //     {
+  //       id: CursoData.payload.doc.id,
+  //       data: CursoData.payload.doc.data(),
+  //     }
+  //     this.cursos.push(curso);
+  //   });
+  // });
 
   public deleteClient(documentId) {
-      this.firestoreservice.deleteCliente(documentId).then(() => {
-        console.log('Documento eliminado Wuuuu');
-      }, (error) => {
+    this.firestoreservice.deleteCliente(documentId).then(() => {
+      console.log('Documento eliminado Wuuuu');
+    }, (error) => {
+      console.error(error);
+    });
+  }
+
+  public editCurso(documentId){
+    let editSubscribe = 
+    this.firestoreservice.getCurso(documentId).subscribe((curso) => {
+      this.currentStatus = 2;
+      this.documentId = documentId;
+      this.newCursoForm.setValue({
+        id:documentId,
+        Curso: curso.payload.data()['Curso'],
+        Hora: curso.payload.data()['Hora'],
+        Imparte: curso.payload.data()['Imparte'],
+        Lugares: curso.payload.data()['Lugares'],
+        Ubicacion: curso.payload.data()['Ubicacion'],
+      });
+      editSubscribe.unsubscribe();
+    });
+  }
+
+  public deleteCurso(documentId) {
+    this.firestoreservice.deleteCurso(documentId).then(() => {
+      console.log('Documento elimiando ');
+    }, (error) => {
+      console.error(error);
+    })
+  }
+
+  public newCurso(form, documentId = this.documentId) {
+    if (this.currentStatus === 1) {
+      let data = {
+        Curso: form.Curso,
+        Hora: form.Hora,
+        Imparte: form.Imparte,
+        Lugares: form.Lugares,
+        Ubicacion: form.Lugares,
+      }
+      this.firestoreservice.createCurso(data).then(() => {
+        console.log("Documento creado");
+        this.newCursoForm.setValue({
+          Curso: '',
+          Hora: '',
+          Imparte: '',
+          Lugares: '',
+          Ubicacion: '',
+          id: '',
+        });
+      },(error) => {
         console.error(error);
       });
+    }else{
+      let data = {
+        Curso: form.Curso,
+        Hora: form.Hora,
+        Imparte: form.Imparte,
+        Lugares: form.Lugares,
+        Ubicacion: form.Ubicacion,
+      }
+      this.firestoreservice.updateCurso(documentId,data).then(() => {
+        this.currentStatus=1;
+        this.newCursoForm.setValue({
+          Curso: '',
+          Hora: '',
+          Imparte: '',
+          Lugares: '',
+          Ubicacion: '',
+          id: '',
+        });
+        console.log('Documento editado exitosamente');
+      },(error) => {
+        console.log(error);
+      });
     }
-
-  public deleteCurso(documentId){
-      this.firestoreservice.deleteCurso(documentId).then(() => {
-        console.log('Documento elimiando ');
-      }, (error) => {
-        console.error(error);
-      })
-    }
+  }
 
 }
