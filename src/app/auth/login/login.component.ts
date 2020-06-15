@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
     Correo : new FormControl(''),
     Contraseña: new FormControl(''),
   });
+  
 
   constructor(private authSvc: FirestoreService, private router: Router) { }
 
@@ -28,12 +29,16 @@ export class LoginComponent implements OnInit {
     //console.log(this.loginForm.value);
     try{
       const user = await this.authSvc.login(Correo, Contraseña);
+      console.log(user)
       if(Correo === 'admin@hotmail.com' && user){
         this.router.navigate(['/admin']);
       }
       else if(user){
         //redirect to homepage
         this.router.navigate(['/home']);
+      }
+      else{
+        document.getElementById('Comprobar').innerText = "Cuenta no encontrada, verifica";
       }
     }
     catch(error){

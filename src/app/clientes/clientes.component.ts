@@ -1,6 +1,6 @@
 import { FirestoreService } from './../services/firestore/firestore.service';
-import { Component, OnInit , NgZone } from '@angular/core';
-import { FormGroup, FormControl, Validators , FormBuilder} from '@angular/forms';
+import { Component, OnInit, NgZone } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-clientes',
@@ -11,15 +11,7 @@ export class ClientesComponent implements OnInit {
 
   public clientes = [];
   public documentId = null;
-  public newClientForm = new FormGroup({
-    Nombre: new FormControl('', Validators.required),
-    Apellido: new FormControl('', Validators.required),
-    Edad: new FormControl('', Validators.required),
-    Correo: new FormControl('', Validators.required),
-    Contraseña: new FormControl('', Validators.required),
-    Contraseña2: new FormControl('', Validators.required),
-    id: new FormControl('')
-  });
+  public cursos = [];
 
   constructor(private firestoreservice: FirestoreService) {
   }
@@ -37,14 +29,43 @@ export class ClientesComponent implements OnInit {
         this.clientes.push(client);
       });
     });
-  }
 
-  public deleteClient(documentId){
-  this.firestoreservice.deleteCliente(documentId).then(() => {
-    console.log('Documento eliminado Wuuuu');
-  }, (error) => {
-    console.error(error);
-  });
-}
+    this.firestoreservice.getCursos().subscribe((cursoSnapshot) => {
+      this.cursos = [];
+      cursoSnapshot.forEach((CursoData: any) => {
+        this.cursos.push({
+          id: CursoData.payload.doc.id,
+          data: CursoData.payload.doc.data()
+        });
+      });
+      });
+    }
+    // this.firestoreservice.getCursos().subscribe((cursoSnapshot) => {
+    //   this.cursos = [];
+    //   cursoSnapshot.forEach((CursoData: any) => {
+    //     let curso =
+    //     {
+    //       id: CursoData.payload.doc.id,
+    //       data: CursoData.payload.doc.data(),
+    //     }
+    //     this.cursos.push(curso);
+    //   });
+    // });
+
+  public deleteClient(documentId) {
+      this.firestoreservice.deleteCliente(documentId).then(() => {
+        console.log('Documento eliminado Wuuuu');
+      }, (error) => {
+        console.error(error);
+      });
+    }
+
+  public deleteCurso(documentId){
+      this.firestoreservice.deleteCurso(documentId).then(() => {
+        console.log('Documento elimiando ');
+      }, (error) => {
+        console.error(error);
+      })
+    }
 
 }

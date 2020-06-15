@@ -3,6 +3,7 @@ import { FirestoreService } from '../../services/firestore/firestore.service';
 import { FormGroup, FormControl, Validators , FormBuilder} from '@angular/forms';
 import { FormsModule} from '@angular/forms';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent implements OnInit {
 
+  public user$: Observable<any> = this.firestoreservice.afAuth.user;
   public newClientForm = new FormGroup({
     Nombre: new FormControl('', Validators.required),
     Apellido: new FormControl('', Validators.required),
@@ -60,8 +62,8 @@ export class RegisterComponent implements OnInit {
 
     console.log(data2.Correo, data2.Contraseña);
     const user = this.firestoreservice.register(data2.Correo, data2.Contraseña);
+    console.log(user);
     if(user){
-      console.log(user);
       this.router.navigate(['/home']);
     }
   }

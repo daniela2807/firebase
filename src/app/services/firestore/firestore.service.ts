@@ -33,6 +33,10 @@ export class FirestoreService {
     return this.firestore.collection('Clientes').snapshotChanges();
   }
 
+  public getCursos(){
+    return this.firestore.collection('Cursos').snapshotChanges();
+  }
+
   //Actualiza un cliente
   public updateCliente(documentId: string, data: any){
     return this.firestore.collection('Clientes').doc(documentId).set(data);
@@ -40,6 +44,11 @@ export class FirestoreService {
 
   public deleteCliente(documentId: string){
     return this.firestore.collection('Clientes').doc(documentId).delete();
+  }
+
+  
+  public deleteCurso(documentId: string){
+    return this.firestore.collection('Cursos').doc(documentId).delete();
   }
 
   async login(correo: string, password: string){

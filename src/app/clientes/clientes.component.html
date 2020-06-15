@@ -1,5 +1,6 @@
 <div class="container">
   <div class="col-6 mt-5">
+    <h1>Info clientes</h1>
     <table class="table">
       <thead>
         <tr>
@@ -21,6 +22,31 @@
           <td>{{cliente.data.Activo}}</td>
           <td>{{cliente.data.DiaInscripcion}}</td>
           <td><button type="button" class="btn btn-success" (click)="deleteClient(cliente.id)"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-6 mt-5">
+    <h1>Info Cursos</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="Nombre">Curso</th>
+          <th scope="Edad">Impartido por</th>
+          <th scope="Apellido">Hora</th>
+          <th scope="Correo">Ubicacion</th>
+          <th scope="Activo">Lugares Disponibles</th>
+          <th scope="Eliminar">Eliminar</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let curso of cursos">
+          <td>{{curso.data.Curso}}</td>
+          <td>{{curso.data.Imparte}}</td>
+          <td>{{curso.data.Hora}}</td>
+          <td>{{curso.data.Ubicacion}}</td>
+          <td>{{curso.data.Lugares}}</td>
+          <td><button type="button" class="btn btn-success" (click)="deleteCurso(curso.id)"><i class="fas fa-trash-alt"></i> Eliminar</button></td>
         </tr>
       </tbody>
     </table>
