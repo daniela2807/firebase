@@ -1,6 +1,6 @@
 import { FirestoreService } from './../services/firestore/firestore.service';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit , NgZone } from '@angular/core';
+import { FormGroup, FormControl, Validators , FormBuilder} from '@angular/forms';
 
 @Component({
   selector: 'app-clientes',
@@ -36,39 +36,6 @@ export class ClientesComponent implements OnInit {
         //client.data.DiaInscripcion = new Date(client.data.DiaInscripcion * 1000).toLocaleString();
         this.clientes.push(client);
       });
-    });
-  }
-
-  public crearUsuario(form){
-    
-  }
-
-  public newClient(form) {
-    let activo = true;
-    let f = new Date();
-    let fecha = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear();
-    //console.log(`Status: ${this.currentStatus}`);
-    let data = {
-      Nombre: form.Nombre,
-      Apellido: form.Apellido,
-      Edad: form.Edad,
-      Correo: form.Correo,
-      Activo: activo,
-      DiaInscripcion: fecha,
-    }
-    this.firestoreservice.createClient(data).then(() => {
-      console.log('Documento creado exitosamente');
-      this.newClientForm.setValue({
-        Nombre: '',
-        Apellido: '',
-        Edad: '',
-        Correo: '',
-        Activo: '',
-        DiaInscripcion: '',
-        id: '',
-      });
-    }, (error) => {
-      console.error(error);
     });
   }
 

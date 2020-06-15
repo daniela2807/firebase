@@ -11,8 +11,8 @@ export const environment = {
     projectId: "entrega1-cd65d",
     storageBucket: "entrega1-cd65d.appspot.com",
     messagingSenderId: "246015295070",
-    // appId: "1:246015295070:web:fa172d1974ba490804fecf",
-    // measurementId: "G-ZLBBD86JBS"
+    appId: "1:246015295070:web:fa172d1974ba490804fecf",
+    measurementId: "G-ZLBBD86JBS"
   }
 };
 

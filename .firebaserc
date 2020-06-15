@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "entrega1-cd65d": {
+      "hosting": {
+        "Prueba": [
+          "entrega1-cd65d"
+        ]
+      }
+    }
+  }
+}

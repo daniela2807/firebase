@@ -1,14 +1,21 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import { Observable} from 'rxjs';
+import { first} from 'rxjs/operators';
 import { ThrowStmt } from '@angular/compiler';
+import {auth} from 'firebase/app';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {User} from 'firebase';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirestoreService {
+
+  public user: User;
   
-  constructor(private firestore: AngularFirestore ) {
+  constructor(private firestore: AngularFirestore, public afAuth: AngularFireAuth) {
   }
 
   //crea un nuevo cliente
@@ -33,5 +40,37 @@ export class FirestoreService {
 
   public deleteCliente(documentId: string){
     return this.firestore.collection('Clientes').doc(documentId).delete();
+  }
+
+  async login(correo: string, password: string){
+    try{
+      //console.log(correo, password);
+      const result = await this.afAuth.signInWithEmailAndPassword(correo, password);
+      return result;
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  async register(correo: string, password: string){
+    try{
+      console.log(correo, password);
+      const result = await this.afAuth.createUserWithEmailAndPassword(correo, password);
+      return result;
+    }
+    catch(error){ console.log(error);
+    }
+  }
+
+  async logout(){
+    try{
+      await this.afAuth.signOut();
+    } catch(error){
+      console.log(error);
+    }
+  }
+
+  getCurrentUser(){
+    return this.afAuth.authState.pipe(first()).toPromise();
   }
 }
