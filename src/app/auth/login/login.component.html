@@ -6,7 +6,7 @@
                 <form  [formGroup]="loginForm" (ngSubmit)="onLogin()">
                     <div class="form-group">
                         <label for="email">Email: </label>
-                        <input type="email" class="form-control" formControlName="Correo">
+                        <input #correo type="email" class="form-control" formControlName="Correo">
                     </div>
                     <div class="form-group">
                         <form action="password">Contraseña</form>
@@ -14,6 +14,9 @@
                     </div>
                     <div class="form-group">
                         <small style="color: red;" id="Comprobar"></small>
+                    </div>
+                    <div class="form-group">
+                        <small>Olvidaste tu contraseña? &nbsp;<button class="contra" (click)="Restablecer(correo.value)">Restablecer</button></small>
                     </div>
                     <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
                 </form>
